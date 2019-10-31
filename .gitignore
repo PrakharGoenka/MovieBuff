@@ -1,0 +1,10 @@
+# Specify filepatterns you want git to ignore.
+
+# directory containing virtual environment files
+venv
+
+# directory containing compiled python codes
+__pycache__
+
+# files related to text editors
+*sublime*

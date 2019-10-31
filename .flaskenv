@@ -1,0 +1,2 @@
+FLASK_APP=MovieBuff.py
+FLASK_ENV=development
