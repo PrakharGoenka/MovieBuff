@@ -1,11 +1,13 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="card my-4" style="width: 600px;">
-  <div class="card-header"><h4>Result for User Id {{ user_id }}</h4></div>
-		{% for movie in movies %}
-			<li>{{movie}}</li>
-			<br/>
+  <div class="card-header"><h4>Result for User Id {{ user_id }}</h4>
+        {% for movie in movies %}
+            <li>{{movie}}</li>
+            <br/>
+        {% endfor %}
+  </div>
 </div>
 
 
-{% endfor %} {% endblock %}
+ {% endblock %}

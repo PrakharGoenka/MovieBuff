@@ -78,10 +78,6 @@ class MovieRecommender():
     def prediction_movie(self, user):
         # top 30 neighbours for each user
         self.sim_user_30_m = self.find_n_neighbours(self.similarity_with_movie,30)
-        a = self.get_user_similar_movies(370,86309)
-        a = a.loc[ : , ['rating_x_x','rating_x_y','title']]
-
-        score = self.User_item_score(320,7371)
 
         self.Rating_avg = self.Rating_avg.astype({"movieId": str})
         self.Movie_user = self.Rating_avg.groupby(by = 'userId')['movieId'].apply(lambda x:','.join(x))
@@ -113,4 +109,3 @@ class MovieRecommender():
         Movie_Name = top_5_recommendation.merge(self.movies, how='inner', on='movieId')
         Movie_Names = Movie_Name.title.values.tolist()
         return Movie_Names
-
