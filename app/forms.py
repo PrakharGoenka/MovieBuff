@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired
 
-class LoginForm(FlaskForm):
+class Recommendations(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators = [DataRequired()])
     submit = SubmitField('Get Recommendations')
@@ -22,3 +22,8 @@ class RateMovie(FlaskForm):
     rating = IntegerField('Rating', validators=[DataRequired()])
     submit = SubmitField('Submit Rating')
 
+class RegisterUser(FlaskForm):
+
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators = [DataRequired()]) 
+    submit = SubmitField('Register')   

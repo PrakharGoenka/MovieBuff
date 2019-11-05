@@ -1,13 +1,13 @@
 from flask import render_template, flash, redirect, url_for
 import pickle
 from app import app
-from app.forms import LoginForm, RateMovie
+from app.forms import Recommendations, RateMovie, RegisterUser
 from app.mv import MovieRecommender
 from app.user import *
 
 @app.route('/', methods = ['GET', 'POST'])
 def get_recommendations():
-    form = LoginForm()
+    form = Recommendations()
 
     if form.validate_on_submit():
         try:
@@ -49,3 +49,24 @@ def rate_movie():
         return redirect(url_for('get_recommendations'))
 
     return render_template('rate.html', title = 'Rate Movie', form = form)
+
+@app.route('/register', methods = ['GET', 'POST'])
+def register_user():
+
+    form = RegisterUser()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        status, message = createNewUser(username, password)
+
+        if status == False:
+            flash(message)
+            return redirect(url_for('register_user'))
+
+        flash(message)
+        return redirect(url_for('get_recommendations'))
+
+    return render_template('register.html', title = 'Register User', form = form)
+
+
