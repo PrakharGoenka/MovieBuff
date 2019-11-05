@@ -1,29 +1,50 @@
 from flask import render_template, flash, redirect, url_for
+import pickle
 from app import app
 from app.forms import LoginForm, RateMovie
 from app.mv import MovieRecommender
-from app.user import User
+from app.user import *
 
 @app.route('/', methods = ['GET', 'POST'])
 def get_recommendations():
     form = LoginForm()
 
     if form.validate_on_submit():
+        try:
+            with open ('./csv/users', 'rb') as infile:
+                users = pickle.load(infile)
+        except EnvironmentError:
+            print(EnvironmentError)
+        username = form.username.data
+        password = form.password.data
+        if(username not in users or users[username][1] != password):
+            flash('Invalid Credentials')
+            return redirect('/')
+        user_id = users[username][0]
         mr = MovieRecommender()
-        movies = mr.prediction_movie(int(form.user_id.data)) 
-        return render_template('results.html',user_id = form.user_id.data, movies = movies)
-    return render_template('login.html', title = 'Sign In', form = form)
+        movies = mr.prediction_movie(user_id) 
+        return render_template('results.html',username = username, movies = movies)
+    return render_template('get_recommendations.html', title = 'Get Recommendations', form = form)
 
 @app.route('/rate', methods = ['GET', 'POST'])
 def rate_movie():
 
     form = RateMovie()
     if form.validate_on_submit():
-        user_id = int(form.user_id.data)
+        try:
+            with open ('./csv/users', 'rb') as infile:
+                users = pickle.load(infile)
+        except EnvironmentError:
+            print(EnvironmentError)
+        username = form.username.data
+        password = form.password.data
+        if(username not in users or users[username][1] != password):
+            flash('Invalid Credentials')
+            return redirect('/rate')
+        user_id = users[username][0]
         movie_id = int(form.movie_id.data)
         rating = int(form.rating.data)
-        user = User()
-        user.newMovieRating(user_id, movie_id, rating)
+        newMovieRating(user_id, movie_id, rating)
         flash('Successfully submitted rating')
         return redirect(url_for('get_recommendations'))
 

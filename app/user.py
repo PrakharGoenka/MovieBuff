@@ -1,23 +1,13 @@
-import pandas as pd
+import csv
 import time
 
-class User:
-    def __init__(self):
-        self.dataset = pd.read_csv('csv/ratings.csv')
-    
-    def newMovieRating(self,user_id,movie_id,ratings):
-        columns = ['userId','movieId','rating','timestamp']
-        rows = []
-        rows.append([user_id,movie_id,ratings,time.time()])
-        df = pd.DataFrame(rows, columns=columns)
-        result = self.dataset.append(df)
-        return result
-        
-    
-    def createNewUser(self,user_id):
-        self.dataset = self.newMovieRating(user_id,1,4.25)
-        self.dataset = self.newMovieRating(user_id,464,4.12)
-        self.dataset = self.newMovieRating(user_id,1270,4.52)
-        self.dataset = self.newMovieRating(user_id,3996,4.05)
-        self.dataset = self.newMovieRating(user_id,8981,4.23)
-        return self.dataset
+def newMovieRating(user_id,movie_id,ratings):
+    fields=[user_id,movie_id,ratings,time.time()]
+    with open(r'./csv/ratings.csv', 'a',newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(fields)
+           
+def createNewUser(user_id):
+    fields=[[user_id,1,4.25],[user_id,464,4.12],[user_id,1270,4.52],[user_id,3996,4.05],[user_id,8981,4.23]]
+    for i in fields:
+        newMovieRating(i[0],i[1],i[2])

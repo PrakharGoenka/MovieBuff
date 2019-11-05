@@ -1,7 +1,8 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="card my-4" style="width: 600px;">
-  <div class="card-header"><h4>Result for User Id {{ user_id }}</h4>
+  <div class="card-header"><h4>Suggested movies for {{ username }} are:</h4>
+  	<br/>
         {% for movie in movies %}
             <li>{{movie}}</li>
             <br/>

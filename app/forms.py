@@ -1,14 +1,24 @@
 import pandas as pd
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
-    user_id = StringField('User Id', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators = [DataRequired()])
     submit = SubmitField('Get Recommendations')
 
 class RateMovie(FlaskForm):
-    user_id = StringField('User Id', validators=[DataRequired()])
-    movie_id = StringField('Movie Id', validators=[DataRequired()])
-    rating = StringField('Rating', validators=[DataRequired()])
+
+    movies = pd.read_csv('./csv/movies.csv', encoding="Latin1")
+    movie_list = list()
+
+    for index, rows in movies.iterrows():
+        movie_list.append((str(rows.movieId), rows.title))
+
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators = [DataRequired()])    
+    movie_id = SelectField('Movie Id', choices = movie_list, validators=[DataRequired()])
+    rating = IntegerField('Rating', validators=[DataRequired()])
     submit = SubmitField('Submit Rating')
+
